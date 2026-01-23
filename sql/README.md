@@ -1,4 +1,4 @@
-# 📊 Capa SQL – Atlantic Flow Surf
+#  Capa SQL – Atlantic Flow Surf
 
 Esta carpeta contiene toda la **arquitectura de datos en SQL Server** del proyecto **Atlantic Flow Surf**, diseñada como un **Data Warehouse analítico** para analizar ventas, servicios y quiebres de inventario en un negocio retail de surf con múltiples sucursales en España.
 
@@ -6,7 +6,7 @@ El objetivo principal de esta capa es **transformar un problema de negocio real*
 
 ---
 
-## 🧠 Contexto de negocio
+##  Contexto de negocio
 
 Atlantic Flow Surf opera en **tres ciudades costeras** con fuerte estacionalidad:
 - San Sebastián  
@@ -26,7 +26,7 @@ La complejidad del negocio exige responder preguntas como:
 
 ---
 
-## 🏗️ Arquitectura de datos
+##  Arquitectura de datos
 
 El modelo sigue un **esquema en estrella**, con:
 - **Dimensiones**: tiempo, producto, sucursal, servicio, profesor, canal de venta y medio de pago.
@@ -42,7 +42,7 @@ Esto permite análisis detallados y modelos predictivos realistas.
 
 ---
 
-## 📁 Contenido de los scripts
+##  Contenido de los scripts
 
 Los archivos están numerados para indicar el **orden correcto de ejecución**:
 
@@ -59,7 +59,7 @@ Los archivos están numerados para indicar el **orden correcto de ejecución**:
 
 ---
 
-## 📊 Características clave del dataset
+##  Características clave del dataset
 
 - Datos simulados con **lógica de negocio realista**
 - Estacionalidad explícita (alta, media y baja)
@@ -69,7 +69,7 @@ Los archivos están numerados para indicar el **orden correcto de ejecución**:
 
 ---
 
-## 🚀 Uso de esta capa
+##  Uso de esta capa
 
 Esta capa SQL sirve como base para:
 - Dashboards en Power BI  
@@ -81,7 +81,7 @@ No es solo SQL: es **modelado de negocio aplicado a datos**.
 
 ---
 
-## 📌 Nota final
+##  Nota final
 
 Este diseño prioriza:
 - Claridad
