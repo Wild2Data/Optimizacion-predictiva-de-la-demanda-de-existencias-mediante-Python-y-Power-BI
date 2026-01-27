@@ -1,1 +1,154 @@
+# 🐍 Python – Modelado Predictivo de Inventario  
+**Atlantic Flow Surf | Machine Learning aplicado a negocio**
+
+---
+
+## 📍 Resumen Ejecutivo
+
+Este módulo implementa un **modelo predictivo de quiebres de stock** utilizando **Python**, conectado a un **Data Warehouse en SQL Server**.  
+El objetivo es **anticipar quiebres de inventario** y **simular decisiones de reposición**, considerando **costos operativos reales** y **logística por tipo de sucursal**.
+
+El enfoque no se limita a la predicción: el proyecto traduce los resultados del modelo en **decisiones operativas accionables**.
+
+---
+
+## 🎯 Objetivo del Proyecto
+
+- Anticipar quiebres de stock antes de que ocurran  
+- Reducir el impacto operativo y financiero de quiebres  
+- Evaluar políticas de reposición mediante simulación  
+- Ajustar decisiones según contexto logístico  
+
+---
+
+## 🧰 Tecnologías Utilizadas
+
+- **Python 3.9+**
+- **pandas / numpy**
+- **SQL Server**
+- **SQLAlchemy / pyodbc**
+- **scikit-learn**
+- **Power BI** (fase posterior)
+
+---
+
+## 🔁 Flujo del Proyecto
+
+1. Extracción de datos desde SQL Server  
+2. Preparación y limpieza del dataset  
+3. Feature engineering  
+4. Construcción del target predictivo  
+5. Entrenamiento del modelo  
+6. Simulación de decisiones de reposición  
+7. Análisis por tipo de sucursal  
+
+---
+
+## 🔧 Feature Engineering
+
+Se construyen variables que representan **tendencia, contexto y riesgo**:
+
+- **`ventas_lag_1`** → comportamiento reciente de la demanda  
+- **`ratio_ventas_stock`** → presión de consumo vs disponibilidad  
+- **`stock_disponible`** → nivel actual de inventario  
+- **`lead_time_dias`** → tiempo de reposición según sucursal  
+
+### 🎯 Variable Objetivo (Target)
+
+- **`quiebre_futuro`**  
+  Indica si ocurrirá al menos un quiebre de stock dentro del horizonte logístico, permitiendo anticipación operativa.
+
+---
+
+## 🤖 Modelado Predictivo
+
+- **Algoritmo:** Random Forest Classifier  
+- **Motivo de elección:**
+  - Maneja relaciones no lineales
+  - Robusto ante ruido
+  - Permite interpretación mediante importancias
+
+- **Validación:**
+  - `TimeSeriesSplit`
+  - Respeta el orden temporal y evita *data leakage*
+
+---
+
+## 📦 Simulación de Decisiones de Reposición
+
+Las predicciones se transforman en **decisiones reales**:
+
+- Si `probabilidad de quiebre ≥ umbral` → **reponer**
+- Caso contrario → **no reponer**
+
+### Umbrales evaluados
+- 0.3 → política muy preventiva  
+- 0.4 → preventiva  
+- **0.5 → política óptima**
+
+### Costos simulados
+- **Quiebre real:** alto impacto financiero y operativo  
+- **Falsa alarma:** costo logístico innecesario  
+
+El umbral **0.5** minimiza el **costo total** manteniendo el riesgo de quiebre en niveles aceptables.
+
+---
+
+##  Análisis por Tipo de Sucursal
+
+El modelo se evalúa diferenciando contexto logístico:
+
+###  Sucursales Urbanas
+- Logística más rápida  
+- Mayor flexibilidad operativa  
+- Menor costo de error  
+
+###  Sucursales Turísticas
+- Alta variabilidad de demanda  
+- Mayor impacto del quiebre  
+- Política más conservadora  
+
+Este análisis permite **ajustar estrategias de reposición según la realidad operativa**.
+
+---
+
+##  Resultados Clave
+
+- Alta capacidad de detección de quiebres futuros  
+- Reducción de quiebres reales mediante decisiones anticipadas  
+- Optimización de costos a través de simulación  
+- Diferenciación efectiva por tipo de sucursal  
+
+---
+
+##  Conclusiones
+
+Este módulo demuestra cómo **Machine Learning aplicado a negocio** puede:
+
+- Convertir datos históricos en decisiones accionables  
+- Evaluar políticas operativas antes de implementarlas  
+- Ajustar estrategias según logística y contexto  
+
+El valor del proyecto está en **cerrar el ciclo completo**:
+> *datos → modelo → decisión → impacto operativo*
+
+---
+
+##  Próximos Pasos
+
+- Ajustar umbrales dinámicos por sucursal  
+- Incorporar variables externas (clima, eventos)  
+- Integrar resultados en Power BI  
+- Evaluar modelos alternativos (XGBoost, LightGBM)
+
+---
+
+##  Autor
+
+**Willialms Aguilera**  
+Data Analyst | Machine Learning aplicado a negocio  
+
+---
+
+📌 *Este proyecto forma parte de un portafolio educativo–profesional enfocado en analítica avanzada y toma de decisiones basada en datos.*
 
