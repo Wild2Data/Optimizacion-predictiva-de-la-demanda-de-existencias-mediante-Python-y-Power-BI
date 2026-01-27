@@ -1,169 +1,153 @@
-# 🐍 Modelado Predictivo de Inventario con Python  
-**Proyecto: Atlantic Flow Surf**
-
-##  Descripción general
-
-Este módulo contiene el desarrollo en **Python** del modelo predictivo de quiebres de stock para el proyecto **Atlantic Flow Surf**.  
-El objetivo es **anticipar quiebres de inventario** utilizando datos históricos de ventas, stock y contexto operativo, y **simular decisiones de reposición** considerando costos y logística real.
-
-El enfoque va más allá de la predicción: se evalúan **políticas operativas** mediante simulación para apoyar la **toma de decisiones de negocio**.
+# 🐍 Python – Modelado Predictivo de Inventario  
+**Atlantic Flow Surf | Machine Learning aplicado a negocio**
 
 ---
 
-##  Objetivo del módulo
+## 📍 Resumen Ejecutivo
 
-- Conectar Python con un **Data Warehouse en SQL Server**
-- Preparar un dataset **ML-ready**
-- Entrenar un modelo de **clasificación supervisada**
-- Predecir **quiebres futuros de stock**
-- Simular decisiones de reposición según:
-  - probabilidad de quiebre
-  - costos operativos
-  - tipo de sucursal y lead time logístico
+Este módulo implementa un **modelo predictivo de quiebres de stock** utilizando **Python**, conectado a un **Data Warehouse en SQL Server**.  
+El objetivo es **anticipar quiebres de inventario** y **simular decisiones de reposición**, considerando **costos operativos reales** y **logística por tipo de sucursal**.
+
+El enfoque no se limita a la predicción: el proyecto traduce los resultados del modelo en **decisiones operativas accionables**.
 
 ---
 
-##  Flujo del proyecto en Python
+## 🎯 Objetivo del Proyecto
 
-1. **Extracción de datos**
-   - Conexión a SQL Server
-   - Carga desde `vw_dataset_prediccion`
-
-2. **Feature Engineering**
-   - Variables temporales (lags)
-   - Ratios ventas / stock
-   - Contexto logístico (lead time)
-   - Construcción del target `quiebre_futuro`
-
-3. **Modelado Predictivo**
-   - Random Forest Classifier
-   - Validación con `TimeSeriesSplit`
-   - Evaluación con métricas de clasificación
-
-4. **Simulación de decisiones**
-   - Umbrales de reposición (0.3 / 0.4 / 0.5)
-   - Cálculo de costos:
-     - quiebres reales
-     - falsas alarmas
-   - Selección de política óptima
-
-5. **Análisis por tipo de sucursal**
-   - Urbana vs Turística
-   - Ajuste operativo según logística
+- Anticipar quiebres de stock antes de que ocurran  
+- Reducir el impacto operativo y financiero de quiebres  
+- Evaluar políticas de reposición mediante simulación  
+- Ajustar decisiones según contexto logístico  
 
 ---
 
-##  Variables clave del modelo
+## 🧰 Tecnologías Utilizadas
 
-###  Target
+- **Python 3.9+**
+- **pandas / numpy**
+- **SQL Server**
+- **SQLAlchemy / pyodbc**
+- **scikit-learn**
+- **Power BI** (fase posterior)
+
+---
+
+## 🔁 Flujo del Proyecto
+
+1. Extracción de datos desde SQL Server  
+2. Preparación y limpieza del dataset  
+3. Feature engineering  
+4. Construcción del target predictivo  
+5. Entrenamiento del modelo  
+6. Simulación de decisiones de reposición  
+7. Análisis por tipo de sucursal  
+
+---
+
+## 🔧 Feature Engineering
+
+Se construyen variables que representan **tendencia, contexto y riesgo**:
+
+- **`ventas_lag_1`** → comportamiento reciente de la demanda  
+- **`ratio_ventas_stock`** → presión de consumo vs disponibilidad  
+- **`stock_disponible`** → nivel actual de inventario  
+- **`lead_time_dias`** → tiempo de reposición según sucursal  
+
+### 🎯 Variable Objetivo (Target)
+
 - **`quiebre_futuro`**  
-  Indica si ocurrirá al menos un quiebre de stock dentro de una ventana futura, considerando el lead time logístico.
-
-### 🔧 Features principales
-- `ventas_lag_1` → tendencia de demanda
-- `ratio_ventas_stock` → presión de consumo
-- `stock_disponible` → nivel actual
-- `lead_time_dias` → contexto logístico
+  Indica si ocurrirá al menos un quiebre de stock dentro del horizonte logístico, permitiendo anticipación operativa.
 
 ---
 
-##  Modelo utilizado
+## 🤖 Modelado Predictivo
 
 - **Algoritmo:** Random Forest Classifier  
-- **Motivo:**  
-  - Maneja relaciones no lineales  
-  - Robusto ante ruido  
-  - Fácil de interpretar mediante importancias
+- **Motivo de elección:**
+  - Maneja relaciones no lineales
+  - Robusto ante ruido
+  - Permite interpretación mediante importancias
 
-- **Validación:**  
-  - TimeSeriesSplit (respeta el orden temporal)
+- **Validación:**
+  - `TimeSeriesSplit`
+  - Respeta el orden temporal y evita *data leakage*
 
 ---
 
-##  Simulación de reposición
+## 📦 Simulación de Decisiones de Reposición
 
-El modelo no se usa solo para predecir, sino para **simular decisiones reales**:
+Las predicciones se transforman en **decisiones reales**:
 
-- Si `prob_quiebre ≥ umbral` → reponer
-- Si no → no reponer
+- Si `probabilidad de quiebre ≥ umbral` → **reponer**
+- Caso contrario → **no reponer**
+
+### Umbrales evaluados
+- 0.3 → política muy preventiva  
+- 0.4 → preventiva  
+- **0.5 → política óptima**
 
 ### Costos simulados
-- **Quiebre real:** alto impacto operativo
-- **Falsa alarma:** costo logístico innecesario
+- **Quiebre real:** alto impacto financiero y operativo  
+- **Falsa alarma:** costo logístico innecesario  
 
-Se comparan distintos umbrales para elegir el que **minimiza el costo total**, no solo el error del modelo.
-
----
-
-##  Análisis por tipo de sucursal
-
-El mismo modelo se evalúa separando:
-
-- **Sucursales Urbanas**
-  - Logística rápida
-  - Mayor tolerancia a riesgo
-
-- **Sucursales Turísticas**
-  - Alta variabilidad de demanda
-  - Mayor costo de quiebre
-  - Política más conservadora
-
-Este análisis permite **adaptar la estrategia** según el contexto operativo.
+El umbral **0.5** minimiza el **costo total** manteniendo el riesgo de quiebre en niveles aceptables.
 
 ---
 
-##  Resultados principales
+## 🏬 Análisis por Tipo de Sucursal
 
-- El modelo logra **alta capacidad de detección de quiebres**
-- La simulación muestra que:
-  - Un umbral de **0.5** minimiza el costo total
-  - Las políticas deben ajustarse por tipo de sucursal
-- El enfoque demuestra cómo **ML puede apoyar decisiones reales**, no solo generar predicciones
+El modelo se evalúa diferenciando contexto logístico:
 
----
+### 🏙️ Sucursales Urbanas
+- Logística más rápida  
+- Mayor flexibilidad operativa  
+- Menor costo de error  
 
-##  Requisitos técnicos
+### 🏖️ Sucursales Turísticas
+- Alta variabilidad de demanda  
+- Mayor impacto del quiebre  
+- Política más conservadora  
 
-- Python 3.9+
-- pandas
-- numpy
-- SQLAlchemy
-- pyodbc
-- scikit-learn
+Este análisis permite **ajustar estrategias de reposición según la realidad operativa**.
 
 ---
 
-##  Cómo ejecutar
+## 📈 Resultados Clave
 
-1. Asegurar conexión a SQL Server (Windows Authentication)
-2. Ejecutar el script principal de Python en orden:
-   - carga de datos
-   - feature engineering
-   - entrenamiento
-   - simulación
-3. Revisar resultados impresos y tablas de resumen
+- Alta capacidad de detección de quiebres futuros  
+- Reducción de quiebres reales mediante decisiones anticipadas  
+- Optimización de costos a través de simulación  
+- Diferenciación efectiva por tipo de sucursal  
 
 ---
 
-##  Próximos pasos
+## 🧠 Conclusiones
 
-- Integrar resultados en **Power BI**
-- Ajustar umbrales dinámicos por sucursal
-- Incluir variables externas (clima, eventos)
-- Evaluar modelos adicionales (XGBoost, LightGBM)
+Este módulo demuestra cómo **Machine Learning aplicado a negocio** puede:
+
+- Convertir datos históricos en decisiones accionables  
+- Evaluar políticas operativas antes de implementarlas  
+- Ajustar estrategias según logística y contexto  
+
+El valor del proyecto está en **cerrar el ciclo completo**:
+> *datos → modelo → decisión → impacto operativo*
 
 ---
 
-##  Autor
+## 🚀 Próximos Pasos
+
+- Ajustar umbrales dinámicos por sucursal  
+- Incorporar variables externas (clima, eventos)  
+- Integrar resultados en Power BI  
+- Evaluar modelos alternativos (XGBoost, LightGBM)
+
+---
+
+## 👤 Autor
 
 **Willialms Aguilera**  
-Proyecto educativo y profesional orientado a Data Analytics & Machine Learning aplicado a negocio.
+Data Analyst | Machine Learning aplicado a negocio  
 
 ---
 
- **Nota final**  
-Este módulo demuestra un enfoque completo:  
-> *desde datos → modelo → decisión → impacto operativo*
-
-Eso es exactamente lo que buscan equipos de **data, analytics y supply chain**.
-
+📌 *Este proyecto forma parte de un portafolio educativo–profesional enfocado en analítica avanzada y toma de decisiones basada en datos.*
