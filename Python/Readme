@@ -1,1 +1,169 @@
+# 🐍 Modelado Predictivo de Inventario con Python  
+**Proyecto: Atlantic Flow Surf**
+
+##  Descripción general
+
+Este módulo contiene el desarrollo en **Python** del modelo predictivo de quiebres de stock para el proyecto **Atlantic Flow Surf**.  
+El objetivo es **anticipar quiebres de inventario** utilizando datos históricos de ventas, stock y contexto operativo, y **simular decisiones de reposición** considerando costos y logística real.
+
+El enfoque va más allá de la predicción: se evalúan **políticas operativas** mediante simulación para apoyar la **toma de decisiones de negocio**.
+
+---
+
+##  Objetivo del módulo
+
+- Conectar Python con un **Data Warehouse en SQL Server**
+- Preparar un dataset **ML-ready**
+- Entrenar un modelo de **clasificación supervisada**
+- Predecir **quiebres futuros de stock**
+- Simular decisiones de reposición según:
+  - probabilidad de quiebre
+  - costos operativos
+  - tipo de sucursal y lead time logístico
+
+---
+
+##  Flujo del proyecto en Python
+
+1. **Extracción de datos**
+   - Conexión a SQL Server
+   - Carga desde `vw_dataset_prediccion`
+
+2. **Feature Engineering**
+   - Variables temporales (lags)
+   - Ratios ventas / stock
+   - Contexto logístico (lead time)
+   - Construcción del target `quiebre_futuro`
+
+3. **Modelado Predictivo**
+   - Random Forest Classifier
+   - Validación con `TimeSeriesSplit`
+   - Evaluación con métricas de clasificación
+
+4. **Simulación de decisiones**
+   - Umbrales de reposición (0.3 / 0.4 / 0.5)
+   - Cálculo de costos:
+     - quiebres reales
+     - falsas alarmas
+   - Selección de política óptima
+
+5. **Análisis por tipo de sucursal**
+   - Urbana vs Turística
+   - Ajuste operativo según logística
+
+---
+
+##  Variables clave del modelo
+
+###  Target
+- **`quiebre_futuro`**  
+  Indica si ocurrirá al menos un quiebre de stock dentro de una ventana futura, considerando el lead time logístico.
+
+### 🔧 Features principales
+- `ventas_lag_1` → tendencia de demanda
+- `ratio_ventas_stock` → presión de consumo
+- `stock_disponible` → nivel actual
+- `lead_time_dias` → contexto logístico
+
+---
+
+##  Modelo utilizado
+
+- **Algoritmo:** Random Forest Classifier  
+- **Motivo:**  
+  - Maneja relaciones no lineales  
+  - Robusto ante ruido  
+  - Fácil de interpretar mediante importancias
+
+- **Validación:**  
+  - TimeSeriesSplit (respeta el orden temporal)
+
+---
+
+##  Simulación de reposición
+
+El modelo no se usa solo para predecir, sino para **simular decisiones reales**:
+
+- Si `prob_quiebre ≥ umbral` → reponer
+- Si no → no reponer
+
+### Costos simulados
+- **Quiebre real:** alto impacto operativo
+- **Falsa alarma:** costo logístico innecesario
+
+Se comparan distintos umbrales para elegir el que **minimiza el costo total**, no solo el error del modelo.
+
+---
+
+##  Análisis por tipo de sucursal
+
+El mismo modelo se evalúa separando:
+
+- **Sucursales Urbanas**
+  - Logística rápida
+  - Mayor tolerancia a riesgo
+
+- **Sucursales Turísticas**
+  - Alta variabilidad de demanda
+  - Mayor costo de quiebre
+  - Política más conservadora
+
+Este análisis permite **adaptar la estrategia** según el contexto operativo.
+
+---
+
+##  Resultados principales
+
+- El modelo logra **alta capacidad de detección de quiebres**
+- La simulación muestra que:
+  - Un umbral de **0.5** minimiza el costo total
+  - Las políticas deben ajustarse por tipo de sucursal
+- El enfoque demuestra cómo **ML puede apoyar decisiones reales**, no solo generar predicciones
+
+---
+
+##  Requisitos técnicos
+
+- Python 3.9+
+- pandas
+- numpy
+- SQLAlchemy
+- pyodbc
+- scikit-learn
+
+---
+
+##  Cómo ejecutar
+
+1. Asegurar conexión a SQL Server (Windows Authentication)
+2. Ejecutar el script principal de Python en orden:
+   - carga de datos
+   - feature engineering
+   - entrenamiento
+   - simulación
+3. Revisar resultados impresos y tablas de resumen
+
+---
+
+##  Próximos pasos
+
+- Integrar resultados en **Power BI**
+- Ajustar umbrales dinámicos por sucursal
+- Incluir variables externas (clima, eventos)
+- Evaluar modelos adicionales (XGBoost, LightGBM)
+
+---
+
+##  Autor
+
+**Willialms Aguilera**  
+Proyecto educativo y profesional orientado a Data Analytics & Machine Learning aplicado a negocio.
+
+---
+
+ **Nota final**  
+Este módulo demuestra un enfoque completo:  
+> *desde datos → modelo → decisión → impacto operativo*
+
+Eso es exactamente lo que buscan equipos de **data, analytics y supply chain**.
 
