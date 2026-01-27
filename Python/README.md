@@ -3,7 +3,7 @@
 
 ---
 
-## 📍 Resumen Ejecutivo
+##  Resumen Ejecutivo
 
 Este módulo implementa un **modelo predictivo de quiebres de stock** utilizando **Python**, conectado a un **Data Warehouse en SQL Server**.  
 El objetivo es **anticipar quiebres de inventario** y **simular decisiones de reposición**, considerando **costos operativos reales** y **logística por tipo de sucursal**.
@@ -12,7 +12,7 @@ El enfoque no se limita a la predicción: el proyecto traduce los resultados del
 
 ---
 
-## 🎯 Objetivo del Proyecto
+##  Objetivo del Proyecto
 
 - Anticipar quiebres de stock antes de que ocurran  
 - Reducir el impacto operativo y financiero de quiebres  
@@ -21,7 +21,7 @@ El enfoque no se limita a la predicción: el proyecto traduce los resultados del
 
 ---
 
-## 🧰 Tecnologías Utilizadas
+##  Tecnologías Utilizadas
 
 - **Python 3.9+**
 - **pandas / numpy**
@@ -32,7 +32,7 @@ El enfoque no se limita a la predicción: el proyecto traduce los resultados del
 
 ---
 
-## 🔁 Flujo del Proyecto
+##  Flujo del Proyecto
 
 1. Extracción de datos desde SQL Server  
 2. Preparación y limpieza del dataset  
@@ -44,7 +44,7 @@ El enfoque no se limita a la predicción: el proyecto traduce los resultados del
 
 ---
 
-## 🔧 Feature Engineering
+##  Feature Engineering
 
 Se construyen variables que representan **tendencia, contexto y riesgo**:
 
@@ -53,14 +53,14 @@ Se construyen variables que representan **tendencia, contexto y riesgo**:
 - **`stock_disponible`** → nivel actual de inventario  
 - **`lead_time_dias`** → tiempo de reposición según sucursal  
 
-### 🎯 Variable Objetivo (Target)
+###  Variable Objetivo (Target)
 
 - **`quiebre_futuro`**  
   Indica si ocurrirá al menos un quiebre de stock dentro del horizonte logístico, permitiendo anticipación operativa.
 
 ---
 
-## 🤖 Modelado Predictivo
+##  Modelado Predictivo
 
 - **Algoritmo:** Random Forest Classifier  
 - **Motivo de elección:**
@@ -74,7 +74,7 @@ Se construyen variables que representan **tendencia, contexto y riesgo**:
 
 ---
 
-## 📦 Simulación de Decisiones de Reposición
+##  Simulación de Decisiones de Reposición
 
 Las predicciones se transforman en **decisiones reales**:
 
